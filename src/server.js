@@ -8,36 +8,37 @@ const dotenv = require("dotenv");
 // Load environment variables from .env file
 dotenv.config();
 
-PORT = process.env.PORT || 3001;
-HOST = process.env.HOST || "localhost"
+const PORT = process.env.PORT || 3001;
+const HOST = process.env.HOST || "localhost";
 
 // Configure some basic Helmet settings on the server instance.
-const helmet = require('helmet');
+const helmet = require("helmet");
 app.use(helmet());
 app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.referrerPolicy());
-app.use(helmet.contentSecurityPolicy({
-    directives:{
-        defaultSrc:["'self'"]
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"]
     }
-}));
+  })
+);
 
 // Configure some basic CORS settings on the server instance.
-// These origin values don't actually have to be anything - 
+// These origin values don't actually have to be anything -
 // this project exists without a front-end, but any front-end
-// that should interact with this API should be listed in the 
+// that should interact with this API should be listed in the
 // array of origins for CORS configuration.
-const cors = require('cors');
+const cors = require("cors");
 var corsOptions = {
-    origin: ["http://localhost:3000", "https://deployedApp.com"],
-    optionsSuccessStatus: 200
-}
+  origin: ["http://localhost:3000", "https://deployedApp.com"],
+  optionsSuccessStatus: 200
+};
 app.use(cors(corsOptions));
-
 
 const mongoose = require("mongoose");
 let databaseURL = "";
-switch(process.env.NODE_ENV.toLowerCase()){
+switch (process.env.NODE_ENV.toLowerCase()) {
   case "prod":
   case "production":
     databaseURL = process.env.DATABASE_URL;
@@ -50,21 +51,21 @@ switch(process.env.NODE_ENV.toLowerCase()){
     databaseURL = "mongodb://127.0.0.1:27017/PawsReunite_Test";
     break;
   default:
-    console.error("Incorrect JS environment specified, database will not be connected.")
+    console.error("Incorrect JS environment specified, database will not be connected.");
     break;
 }
 
 const { dbConnect, dbClose } = require("./database");
 dbConnect(databaseURL)
-.then(() => {
-  console.log("Database connected!");
-})
-.catch(error => {
-  console.log(`
+  .then(() => {
+    console.log("Database connected!");
+  })
+  .catch((error) => {
+    console.log(`
     Some error occurred connecting to the database! It was: 
     ${error}
   `);
-});
+  });
 
 app.get("/", (request, response) => {
   response.json({
@@ -90,7 +91,7 @@ app.get("/databaseHealth", (request, response) => {
 
 //Routes Here
 const RoleRoute = require("./routes/RoleRoute");
-app.use("/roles", RoleRoute)
+app.use("/roles", RoleRoute);
 
 app.get("*", (request, response) => {
   response.status(404).json({
@@ -98,6 +99,4 @@ app.get("*", (request, response) => {
   });
 });
 
-module.exports = {app, PORT, HOST};
-
-
+module.exports = { app, PORT, HOST };
