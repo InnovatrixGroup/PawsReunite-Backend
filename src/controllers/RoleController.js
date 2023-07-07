@@ -2,6 +2,7 @@
 const {Role} = require("../models/RoleModel")
 const {User} = require("../models/UserModel")
 
+// Async function to retrieve all roles
 const getAllRoles = async (request, response) => {
   try{
     const allRoles = await Role.find({}).exec();
@@ -15,6 +16,7 @@ const getAllRoles = async (request, response) => {
   }
 }
 
+// Async function to retrieve users with a specific role
 const getUsersWithRole = async (request, response) => {
   try{
     const role = await Role.findOne({name: request.params.roleName}).exec();
