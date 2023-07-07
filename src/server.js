@@ -89,7 +89,8 @@ app.get("/databaseHealth", (request, response) => {
 });
 
 //Routes Here
-
+const RoleRoute = require("./routes/RoleRoute");
+app.use("/roles", RoleRoute)
 
 app.get("*", (request, response) => {
   response.status(404).json({
