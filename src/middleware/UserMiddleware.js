@@ -1,5 +1,5 @@
 const { checkSchema, validationResult } = require("express-validator");
-const User = require("../models/UserModel");
+const { User } = require("../models/UserModel");
 
 // a express-validator schema to check if user's input is valid
 const checkSignupInputSchema = {
