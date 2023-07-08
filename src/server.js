@@ -8,6 +8,9 @@ const dotenv = require("dotenv");
 // Load environment variables from .env file
 dotenv.config();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || "localhost";
 
@@ -92,6 +95,9 @@ app.get("/databaseHealth", (request, response) => {
 //Routes Here
 const RoleRoute = require("./routes/RoleRoute");
 app.use("/roles", RoleRoute);
+
+const PostRoute = require("./routes/PostRoute");
+app.use("/posts", PostRoute);
 
 app.get("*", (request, response) => {
   response.status(404).json({
