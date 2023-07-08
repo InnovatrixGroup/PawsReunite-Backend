@@ -1,6 +1,6 @@
 // Importing the Express library
 const express = require("express");
-const { signup, getAllUsers } = require("../controllers/UserController");
+const { signup, signin } = require("../controllers/UserController");
 const { validateSignupInput, validateExistingUser } = require("../middleware/UserMiddleware");
 const { errorCheck } = require("../middleware/ErrorMiddleware");
 
@@ -9,6 +9,6 @@ const usersRouter = express.Router();
 
 usersRouter.post("/signup", validateSignupInput, validateExistingUser, errorCheck, signup);
 
-usersRouter.get("/", getAllUsers);
+usersRouter.post("/signin", signin);
 
 module.exports = usersRouter;
