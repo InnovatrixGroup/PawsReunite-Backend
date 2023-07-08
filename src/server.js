@@ -36,6 +36,9 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const mongoose = require("mongoose");
 let databaseURL = "";
 switch (process.env.NODE_ENV.toLowerCase()) {
@@ -67,6 +70,12 @@ dbConnect(databaseURL)
   `);
   });
 
+// initialize request errors array for error handling
+app.use((request, response, next) => {
+  request.errors = [];
+  next();
+});
+
 app.get("/", (request, response) => {
   response.json({
     data: "Welcome to PawsReunite"
@@ -92,6 +101,9 @@ app.get("/databaseHealth", (request, response) => {
 //Routes Here
 const RoleRoute = require("./routes/RoleRoute");
 app.use("/roles", RoleRoute);
+
+const usersRoute = require("./routes/UserRoute");
+app.use("/users", usersRoute);
 
 app.get("*", (request, response) => {
   response.status(404).json({

@@ -86,15 +86,18 @@ const posts = [
 const comments = [
   {
     content: "i found this dog",
-    userId: null
+    userId: null,
+    createdAt: Date.now()
   },
   {
     content: "hopefully she can back home soon",
-    userId: null
+    userId: null,
+    createdAt: Date.now()
   },
   {
     content: "this dog",
-    userId: null
+    userId: null,
+    createdAt: Date.now()
   }
 ];
 
