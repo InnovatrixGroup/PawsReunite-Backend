@@ -21,7 +21,7 @@ router.get("/filter", filterPosts);
 router.get("/:postId", getSpecificPost);
 
 // router.post("/", verifyJwtHeader, verifyJwtRole, handleErrors, createPost);
-router.post("/:userId", upload.single("image"), createPost);
+router.post("/:userId", upload.single("photos"), createPost);
 
 // router.delete("/:postId", verifyJwtHeader, verifyJwtRole, handleErrors, deletePost);
 router.delete("/:postId", deletePost);
