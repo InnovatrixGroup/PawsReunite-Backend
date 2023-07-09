@@ -116,4 +116,38 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = { signup, signin, editProfile, getAllUsers };
+// TODO: need logic to delete all posts and comments by the user
+const deleteUser = async (req, res) => {
+  try {
+    let userToDelete = await User.findByIdAndDelete(req.params.userId).exec();
+
+    // if user is not found, send an error message
+    if (!userToDelete) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.json({ message: "User deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+const getAccountDetails = async (req, res) => {
+  try {
+    let userToCheck = await User.findById(req.params.userId).exec();
+
+    // if user is not found, send an error message
+    // if user is found, check if the user is the same as the user in the JWT token
+    if (!userToCheck) {
+      return res.status(404).json({ error: "User not found" });
+    } else if (userToCheck._id.equals(req.headers.user._id)) {
+      return res.json(userToCheck);
+    } else {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { signup, signin, editProfile, getAllUsers, deleteUser, getAccountDetails };
