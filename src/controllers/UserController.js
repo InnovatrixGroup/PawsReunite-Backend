@@ -21,4 +21,13 @@ const signup = async (req, res) => {
   }
 };
 
-module.exports = { signup };
+const getAllUsers = async (req, res) => {
+  try {
+    const allUsers = await User.find({}).exec();
+    res.json({ data: allUsers });
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+};
+
+module.exports = { signup, generateJWT, getAllUsers };

@@ -9,20 +9,19 @@ const {
   deletePost,
   filterPosts
 } = require("../controllers/PostController");
-// const { verifyJwtHeader, verifyJwtRole, handleErrors } = require("../middleware/auth_middleware");
+
+const { upload } = require("../middleware/image_upload_aws");
 
 router.get("/", getAllPosts);
 
-// router.get("/user", verifyJwtHeader, verifyJwtRole, handleErrors, getSpecificUserPosts);
-
-router.get("/user", getSpecificUserPosts);
+router.get("/user/:userId", getSpecificUserPosts);
 
 router.get("/filter", filterPosts);
 
 router.get("/:postId", getSpecificPost);
 
 // router.post("/", verifyJwtHeader, verifyJwtRole, handleErrors, createPost);
-router.post("/", createPost);
+router.post("/:userId", upload.single("image"), createPost);
 
 // router.delete("/:postId", verifyJwtHeader, verifyJwtRole, handleErrors, deletePost);
 router.delete("/:postId", deletePost);

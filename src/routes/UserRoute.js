@@ -1,6 +1,6 @@
 // Importing the Express library
 const express = require("express");
-const { signup } = require("../controllers/UserController");
+const { signup, getAllUsers } = require("../controllers/UserController");
 const { validateSignupInput, validateExistingUser } = require("../middleware/UserMiddleware");
 const { errorCheck } = require("../middleware/ErrorMiddleware");
 const { hashPassword } = require("../middleware/auth_middleware");
@@ -16,5 +16,7 @@ usersRouter.post(
   hashPassword,
   signup
 );
+
+usersRouter.get("/", getAllUsers);
 
 module.exports = usersRouter;
