@@ -14,9 +14,7 @@ const checkSignupInputSchema = {
       options: {
         minLength: 8,
         minLowercase: 1,
-        minUppercase: 1,
-        minSymbols: 0,
-        minNumbers: 0
+        minUppercase: 1
       }
     }
   }
