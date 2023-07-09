@@ -65,10 +65,12 @@ async function verifyUserJWT(userJWT) {
   let userData = JSON.parse(decryptedJwtPayload);
 
   // Find the user mentioned in the JWT.
-  let targetUser = await User.findById(userData.userID).exec();
+  let targetUser = await User.findById(userData.userId).exec();
+  // console.log(targetUser);
   // If user exists, return a fresh JWT.
   if (targetUser) {
-    return generateJWT({ data: userJwtVerified.payload.data });
+    let newJWT = generateJWT({ data: userJwtVerified.payload.data });
+    return { targetUser, newJWT };
   } else {
     // Otherwise, user details are invalid and they don't get a new token.
     // When a frontend receives this error, it should redirect to a sign-in page.

@@ -1,18 +1,28 @@
 // Importing the Express library
 const express = require("express");
-const { signup, signin, editProfile } = require("../controllers/UserController");
-const { validateSignupInput, validateExistingUser } = require("../middleware/UserMiddleware");
-const { verifyJwtHeader, verifyJwtRole } = require("../middleware/AuthMiddleware");
+const { signup, signin, editProfile, getAllUsers } = require("../controllers/UserController");
+const {
+  validateEmailAndPasswordInput,
+  checkIfIsExistingUser
+} = require("../middleware/UserMiddleware");
+const { verifyJwtAndRefresh, onlyAllowAdmins } = require("../middleware/AuthMiddleware");
 const { errorCheck } = require("../middleware/ErrorMiddleware");
 
 // Creating a router object using the Express library
 const usersRouter = express.Router();
 
-usersRouter.post("/signup", validateSignupInput, validateExistingUser, signup, errorCheck);
+usersRouter.post(
+  "/signup",
+  validateEmailAndPasswordInput,
+  checkIfIsExistingUser,
+  errorCheck,
+  signup
+);
 
 usersRouter.post("/signin", signin);
 
-// not quite right yet, need to update the middlewares
-usersRouter.put("/", verifyJwtHeader, errorCheck, editProfile);
+usersRouter.put("/", verifyJwtAndRefresh, validateEmailAndPasswordInput, errorCheck, editProfile);
+
+usersRouter.get("/all", verifyJwtAndRefresh, onlyAllowAdmins, errorCheck, getAllUsers);
 
 module.exports = usersRouter;

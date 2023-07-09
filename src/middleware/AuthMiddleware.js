@@ -5,54 +5,37 @@ const { verifyUserJWT, decryptString } = require("../services/auth_services");
 
 // Make sure the JWT available in the headers is valid,
 // and refresh it to keep the JWT usable for longer.
-const verifyJwtHeader = async (req, res, next) => {
+const verifyJwtAndRefresh = async (req, res, next) => {
   try {
+    // Verify the JWT in the headers
     let rawJwtHeader = req.headers.authorization;
+    let jwtToken = rawJwtHeader.split(" ")[1];
 
-    let jwtRefresh = await verifyUserJWT(rawJwtHeader);
+    // verify and refresh the JWT if valid
+    let userJwtVerifiedResult = await verifyUserJWT(jwtToken);
+    let { newJWT, targetUser } = userJwtVerifiedResult;
+    req.headers.authorization = "Bearer " + newJWT;
 
-    req.headers.authorization = jwtRefresh;
+    // Assign the user's role and ID to the request headers
+    let targetRole = await Role.findById(targetUser.roleId).exec();
+    req.headers.userRole = targetRole.name;
+    req.headers.userId = targetUser._id;
+    req.headers.user = targetUser;
 
     next();
   } catch (error) {
     req.errors.push(error.message);
-  }
-};
-
-const verifyJwtRole = async (request, response, next) => {
-  try {
-    // Verify the JWT in the headers
-    let userJwtVerified = jwt.verify(request.headers.authorization, process.env.JWT_SECRET, {
-      complete: true
-    });
-    let decryptedJwtPayload = decryptString(userJwtVerified.payload.data);
-    let userData = JSON.parse(decryptedJwtPayload);
-
-    // Find the user mentioned in the JWT.
-    let targetUser = await User.findById(userData.userId).exec();
-    if (!targetUser) {
-      throw new Error({ message: "User not found." });
-    }
-    let targetRole = await Role.findById(targetUser.roleId).exec();
-
-    // Assign the user's role and ID to the request headers
-    request.headers.userRole = targetRole.name;
-    request.headers.userId = targetUser._id;
     next();
-  } catch (error) {
-    request.errors.push(error.message);
   }
 };
 
-const onlyAllowAdmins = async (request, response, next) => {
-  try {
-    if (request.headers.userRole !== "admin") {
-      throw new Error({ message: "You are not authorized to perform this action." });
-    }
+const onlyAllowAdmins = async (req, res, next) => {
+  if (req.headers.userRole === "admin") {
     next();
-  } catch (error) {
-    request.errors.push(error.message);
+  } else {
+    req.errors.push("Unauthorized");
+    next();
   }
 };
 
-module.exports = { verifyJwtHeader, verifyJwtRole, onlyAllowAdmins };
+module.exports = { verifyJwtAndRefresh, onlyAllowAdmins };
