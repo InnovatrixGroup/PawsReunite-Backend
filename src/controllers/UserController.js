@@ -1,4 +1,6 @@
 const { User } = require("../models/UserModel");
+const { Post } = require("../models/PostModel");
+const { Comment } = require("../models/CommentModel");
 const { hashPassword, generateUserJWT, validateHashedData } = require("../services/auth_services");
 
 // for signup route
@@ -120,6 +122,9 @@ const getAllUsers = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     let userToDelete = await User.findByIdAndDelete(req.params.userId).exec();
+    // delete all posts and comments by the user
+    let postsToDelete = await Post.deleteMany({ userId: req.params.userId }).exec();
+    let commentsToDelete = await Comment.deleteMany({ userId: req.params.userId }).exec();
 
     // if user is not found, send an error message
     if (!userToDelete) {
