@@ -30,14 +30,15 @@ usersRouter.post(
 // Creating a route for signing in an existing user
 usersRouter.post("/signin", signin);
 
+// Creating a route for getting all users, admin only
+// Have to put this route before the route for getting a user's account details
+usersRouter.get("/all", verifyJwtAndRefresh, onlyAllowAdmins, errorCheck, getAllUsers);
+
 // Creating a route for getting a user's account details
 usersRouter.get("/:userId", verifyJwtAndRefresh, errorCheck, getAccountDetails);
 
 // Creating a route for editing a user's account details
 usersRouter.put("/", verifyJwtAndRefresh, validateEmailAndPasswordInput, errorCheck, editProfile);
-
-// Creating a route for getting all users, admin only
-usersRouter.get("/all", verifyJwtAndRefresh, onlyAllowAdmins, errorCheck, getAllUsers);
 
 // Creating a route for deleting a user, admin only
 usersRouter.delete("/:userId", verifyJwtAndRefresh, onlyAllowAdmins, errorCheck, deleteUser);
