@@ -28,8 +28,13 @@ const checkPasswordStrengthSchema = {
 // the middleware to check if user's email & password input is valid
 const validateEmailAndPasswordInput = async (req, res, next) => {
   // run express-validator checkSchema
-  req.body.email && (await checkSchema(checkEmailSchema, ["body"]).run(req));
-  req.body.password && (await checkSchema(checkPasswordStrengthSchema, ["body"]).run(req));
+  if (req.body.email || req.body.email === "") {
+    req.body.email && (await checkSchema(checkEmailSchema, ["body"]).run(req));
+  }
+
+  if (req.body.password || req.body.password === "") {
+    await checkSchema(checkPasswordStrengthSchema, ["body"]).run(req);
+  }
 
   // if there is an error, push the error message to req.errors
   const errors = validationResult(req);
