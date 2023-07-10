@@ -9,6 +9,7 @@ const verifyJwtAndRefresh = async (req, res, next) => {
   try {
     // Verify the JWT in the headers
     let rawJwtHeader = req.headers.authorization;
+    if (!rawJwtHeader) throw new Error("Unauthorized");
     let jwtToken = rawJwtHeader.split(" ")[1];
 
     // verify and refresh the JWT if valid
@@ -21,7 +22,6 @@ const verifyJwtAndRefresh = async (req, res, next) => {
     req.headers.userRole = targetRole.name;
     req.headers.userId = targetUser._id;
     req.headers.user = targetUser;
-
     next();
   } catch (error) {
     req.errors.push(error.message);

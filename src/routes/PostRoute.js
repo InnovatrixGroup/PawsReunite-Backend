@@ -11,22 +11,21 @@ const {
 } = require("../controllers/PostController");
 
 const { upload } = require("../middleware/image_upload_aws");
+const { verifyJwtAndRefresh, onlyAllowAdmins } = require("../middleware/AuthMiddleware");
+const { errorCheck } = require("../middleware/ErrorMiddleware");
 
 router.get("/", getAllPosts);
 
-router.get("/user/:userId", getSpecificUserPosts);
+router.get("/user", verifyJwtAndRefresh, errorCheck, getSpecificUserPosts);
 
 router.get("/filter", filterPosts);
 
-router.get("/:postId", getSpecificPost);
+router.get("/:postId", verifyJwtAndRefresh, errorCheck, getSpecificPost);
 
-// router.post("/", verifyJwtHeader, verifyJwtRole, handleErrors, createPost);
-router.post("/:userId", upload.single("photos"), createPost);
+router.post("/", upload.single("photos"), verifyJwtAndRefresh, errorCheck, createPost);
 
-// router.delete("/:postId", verifyJwtHeader, verifyJwtRole, handleErrors, deletePost);
-router.delete("/:postId", deletePost);
+router.delete("/:postId", verifyJwtAndRefresh, errorCheck, deletePost);
 
-// router.put("/:postId", verifyJwtHeader, verifyJwtRole, handleErrors, updatePost);
-router.put("/:postId", updatePost);
+router.put("/:postId", verifyJwtAndRefresh, errorCheck, updatePost);
 
 module.exports = router;

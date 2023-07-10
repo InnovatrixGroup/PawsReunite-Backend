@@ -14,6 +14,8 @@ const { Comment } = require("./models/CommentModel");
 const dotenv = require("dotenv");
 dotenv.config();
 
+const { hashPassword } = require("./services/auth_services");
+
 // Array of role objects to be inserted into the database
 const roles = [
   {
@@ -147,7 +149,8 @@ dbConnect(databaseURL)
 
     for (const user of users) {
       // Assigning each user as a regular role from the created roles
-      user.roleId = rolesCreated[0].id;
+      user.roleId = rolesCreated[1].id;
+      user.password = await hashPassword(user.password);
     }
     const usersCreated = await User.insertMany(users);
 
