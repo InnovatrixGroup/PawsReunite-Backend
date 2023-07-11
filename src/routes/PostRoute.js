@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const {
   getAllPosts,
-  getSpecificPost,
   getSpecificUserPosts,
   updatePost,
   createPost,
@@ -20,8 +19,6 @@ router.get("/", getAllPosts);
 router.get("/user", verifyJwtAndRefresh, errorCheck, getSpecificUserPosts);
 
 router.get("/filter", filterPosts);
-
-router.get("/:postId", verifyJwtAndRefresh, errorCheck, getSpecificPost);
 
 router.post(
   "/",

@@ -3,7 +3,13 @@ const { Post } = require("../models/PostModel");
 const getAllPosts = async (request, response) => {
   try {
     let allPosts;
-    if (request.query.status) {
+    if (request.query.postId) {
+      const postId = request.query.postId;
+      allPosts = await Post.findById(postId).exec();
+      if (!allPosts) {
+        throw new Error("Post not found");
+      }
+    } else if (request.query.status) {
       const status = request.query.status;
       allPosts = await Post.find({ status: status }).exec();
     } else {
@@ -24,22 +30,6 @@ const getSpecificUserPosts = async (request, response) => {
     const allPosts = await Post.find({ userId: request.headers.userId }).exec();
     response.json({
       data: allPosts
-    });
-  } catch (error) {
-    response.json({
-      error: error.message
-    });
-  }
-};
-
-const getSpecificPost = async (request, response) => {
-  try {
-    const post = await Post.findById(request.params.postId).exec();
-    if (!post) {
-      throw new Error("Post not found");
-    }
-    response.json({
-      data: post
     });
   } catch (error) {
     response.json({
@@ -150,7 +140,6 @@ const filterPosts = async (request, response) => {
 module.exports = {
   getAllPosts,
   getSpecificUserPosts,
-  getSpecificPost,
   createPost,
   deletePost,
   updatePost,
