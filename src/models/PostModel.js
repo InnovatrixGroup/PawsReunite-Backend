@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 // Defining a schema for the Post model
 const PostSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  title: { type: String, required: true },
   species: { type: String, required: true },
   breed: { type: String, required: true },
   color: { type: String, required: true },

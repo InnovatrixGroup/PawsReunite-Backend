@@ -55,7 +55,7 @@ const createPost = async (request, response) => {
     const file = request.file;
     const photos = await uploadFileToS3(file);
     const newPost = new Post({
-      name: request.body.name,
+      title: request.body.title,
       species: request.body.species,
       breed: request.body.breed,
       color: request.body.color,
@@ -109,7 +109,7 @@ const updatePost = async (request, response) => {
       throw new Error("You are not authorized to update this post.");
     } else {
       const updatedData = {
-        name: request.body.name || post.name,
+        title: request.body.title || post.title,
         species: request.body.species || post.species,
         breed: request.body.breed || post.breed,
         color: request.body.color || post.color,
