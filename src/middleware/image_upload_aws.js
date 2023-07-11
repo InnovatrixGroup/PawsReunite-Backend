@@ -28,25 +28,28 @@ const s3 = new aws.S3({
   secretAccessKey: process.env.AWS_SECRET_KEY
 });
 
-const uploadFileToS3 = (file) => {
-  return new Promise((resolve, reject) => {
+const uploadFilesToS3 = (files) => {
+  const uploadPromises = files.map((file) => {
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: `${uuidv4()}-${file.originalname}`,
       Body: file.buffer
     };
 
-    s3.upload(params, (error, data) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(data.Location);
-      }
+    return new Promise((resolve, reject) => {
+      s3.upload(params, (error, data) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(data.Location);
+        }
+      });
     });
   });
+  return Promise.all(uploadPromises);
 };
 
 module.exports = {
   upload,
-  uploadFileToS3
+  uploadFilesToS3
 };

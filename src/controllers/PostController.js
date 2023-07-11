@@ -38,12 +38,12 @@ const getSpecificUserPosts = async (request, response) => {
   }
 };
 
-const { uploadFileToS3 } = require("../middleware/image_upload_aws");
+const { uploadFilesToS3 } = require("../middleware/image_upload_aws");
 
 const createPost = async (request, response) => {
   try {
-    const file = request.file;
-    const photos = await uploadFileToS3(file);
+    const files = request.files;
+    const photos = await uploadFilesToS3(files);
     const newPost = new Post({
       title: request.body.title,
       species: request.body.species,
@@ -56,6 +56,7 @@ const createPost = async (request, response) => {
       status: request.body.status,
       userId: request.headers.userId
     });
+
     const savedPost = await newPost.save();
     response.json({
       data: savedPost

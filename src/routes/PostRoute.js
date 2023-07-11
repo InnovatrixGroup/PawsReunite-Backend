@@ -22,7 +22,7 @@ router.get("/filter", filterPosts);
 
 router.post(
   "/",
-  upload.single("photos"),
+  upload.array("photos"),
   verifyJwtAndRefresh,
   validateTitleLength,
   errorCheck,
