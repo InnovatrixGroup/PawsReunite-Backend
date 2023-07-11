@@ -3,7 +3,13 @@ const { Post } = require("../models/PostModel");
 const getAllPosts = async (request, response) => {
   try {
     let allPosts;
-    if (request.query.status) {
+    if (request.query.postId) {
+      const postId = request.query.postId;
+      allPosts = await Post.findById(postId).exec();
+      if (!allPosts) {
+        throw new Error("Post not found");
+      }
+    } else if (request.query.status) {
       const status = request.query.status;
       allPosts = await Post.find({ status: status }).exec();
     } else {
@@ -32,30 +38,14 @@ const getSpecificUserPosts = async (request, response) => {
   }
 };
 
-const getSpecificPost = async (request, response) => {
-  try {
-    const post = await Post.findById(request.params.postId).exec();
-    if (!post) {
-      throw new Error("Post not found");
-    }
-    response.json({
-      data: post
-    });
-  } catch (error) {
-    response.json({
-      error: error.message
-    });
-  }
-};
-
-const { uploadFileToS3 } = require("../middleware/image_upload_aws");
+const { uploadFilesToS3 } = require("../middleware/image_upload_aws");
 
 const createPost = async (request, response) => {
   try {
-    const file = request.file;
-    const photos = await uploadFileToS3(file);
+    const files = request.files;
+    const photos = await uploadFilesToS3(files);
     const newPost = new Post({
-      name: request.body.name,
+      title: request.body.title,
       species: request.body.species,
       breed: request.body.breed,
       color: request.body.color,
@@ -66,6 +56,7 @@ const createPost = async (request, response) => {
       status: request.body.status,
       userId: request.headers.userId
     });
+
     const savedPost = await newPost.save();
     response.json({
       data: savedPost
@@ -109,7 +100,7 @@ const updatePost = async (request, response) => {
       throw new Error("You are not authorized to update this post.");
     } else {
       const updatedData = {
-        name: request.body.name || post.name,
+        title: request.body.title || post.title,
         species: request.body.species || post.species,
         breed: request.body.breed || post.breed,
         color: request.body.color || post.color,
@@ -150,7 +141,6 @@ const filterPosts = async (request, response) => {
 module.exports = {
   getAllPosts,
   getSpecificUserPosts,
-  getSpecificPost,
   createPost,
   deletePost,
   updatePost,

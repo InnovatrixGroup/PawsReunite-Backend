@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "dev": "NODE_ENV=development nodemon src/index.js",
     "prod": "NODE_ENV=production node src/index.js",
     "configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\""
@@ -29,9 +29,17 @@
     "eslint": "^8.44.0",
     "eslint-plugin-react": "^7.32.2",
     "husky": "^8.0.3",
+    "jest": "^29.6.1",
     "lint-staged": "^13.2.3",
     "nodemon": "^2.0.22",
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "supertest": "^6.3.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   },
   "lint-staged": {
     "**/*.{js,jsx,json}": [
