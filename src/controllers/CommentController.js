@@ -59,7 +59,10 @@ const deleteComment = async (request, response) => {
     if (!comment) {
       throw new Error("Comment not found");
     }
-    if (comment.userId.equals(request.headers.userId) === false) {
+    if (
+      comment.userId.equals(request.headers.userId) === false ||
+      request.headers.role !== "admin"
+    ) {
       throw new Error("You are not authorized to delete this comment");
     }
     const removedComment = await Comment.findByIdAndDelete(request.params.commentId).exec();
