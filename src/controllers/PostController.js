@@ -7,19 +7,23 @@ const getAllPosts = async (request, response) => {
       const postId = request.query.postId;
       allPosts = await Post.findById(postId).exec();
       if (!allPosts) {
-        throw new Error("Post not found");
+        const error = new Error("Post not found");
+        error.statusCode = 404;
+        throw error;
       }
-    } else if (request.query.status) {
-      const status = request.query.status;
-      allPosts = await Post.find({ status: status }).exec();
     } else {
-      allPosts = await Post.find({}).exec();
+      const filters = {};
+      for (const queryParam in request.query) {
+        filters[queryParam] = request.query[queryParam];
+      }
+      console.log(filters);
+      allPosts = await Post.find(filters).exec();
     }
     response.json({
       data: allPosts
     });
   } catch (error) {
-    response.json({
+    response.status(error.statusCode || 500).json({
       error: error.message
     });
   }
