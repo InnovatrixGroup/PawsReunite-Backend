@@ -1,36 +1,46 @@
 const { Post } = require("../models/PostModel");
 
+// Async function to retrieve all posts based on query parameters or no params
 const getAllPosts = async (request, response) => {
   try {
     let allPosts;
+    // If postId is provided in the query, find a specific post by its ID
     if (request.query.postId) {
       const postId = request.query.postId;
       allPosts = await Post.findById(postId).exec();
+      // if post not found, throw an error
       if (!allPosts) {
         const error = new Error("Post not found");
         error.statusCode = 404;
         throw error;
       }
     } else {
+      // If no query parameters posrId is provided, find all posts based on other query parameters (filters)
       const filters = {};
+
+      // Loop through all query parameters and add them to the filters object
       for (const queryParam in request.query) {
         filters[queryParam] = request.query[queryParam];
       }
-      console.log(filters);
-      allPosts = await Post.find(filters).exec();
+
+      // Find posts based on the applied filters and sort them by createdAt in descending order
+      allPosts = await Post.find(filters).sort({ createdAt: -1 }).exec();
     }
     response.json({
       data: allPosts
     });
   } catch (error) {
+    // If error is thrown, send error message and status code
     response.status(error.statusCode || 500).json({
       error: error.message
     });
   }
 };
 
+// Get specific user's posts
 const getSpecificUserPosts = async (request, response) => {
   try {
+    // Find all posts associated with the provided userId in the request headers
     const allPosts = await Post.find({ userId: request.headers.userId }).exec();
     response.json({
       data: allPosts
@@ -44,10 +54,15 @@ const getSpecificUserPosts = async (request, response) => {
 
 const { uploadFilesToS3 } = require("../middleware/image_upload_aws");
 
+// Create a new post
 const createPost = async (request, response) => {
   try {
+    // Get files from the request
     const files = request.files;
+    // Upload files to AWS S3 bucket and get the URLs
     const photos = await uploadFilesToS3(files);
+
+    // Create a new post with the provided data
     const newPost = new Post({
       title: request.body.title,
       species: request.body.species,
@@ -72,8 +87,10 @@ const createPost = async (request, response) => {
   }
 };
 
+// Delete a post
 const deletePost = async (request, response) => {
   try {
+    // Find the post by its ID
     const post = await Post.findById(request.params.postId).exec();
 
     // only user who created the post or admin can delete the post
@@ -94,6 +111,7 @@ const deletePost = async (request, response) => {
   }
 };
 
+// Update a post
 const updatePost = async (request, response) => {
   try {
     const post = await Post.findById(request.params.postId).exec();
@@ -103,6 +121,7 @@ const updatePost = async (request, response) => {
     if (!post.userId.equals(request.headers.userId)) {
       throw new Error("You are not authorized to update this post.");
     } else {
+      // If the user is authorized to update the post, update the post with the provided data or keep the old data
       const updatedData = {
         title: request.body.title || post.title,
         species: request.body.species || post.species,
@@ -128,9 +147,10 @@ const updatePost = async (request, response) => {
   }
 };
 
-// filter
+// get all status of posts
 const filterPosts = async (request, response) => {
   try {
+    // get all distinct status of posts
     const allStatus = await Post.distinct(request.query.status).exec();
     response.json({
       data: allStatus
