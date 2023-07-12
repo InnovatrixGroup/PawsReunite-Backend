@@ -1,9 +1,12 @@
 const request = require("supertest");
 const mongoose = require("mongoose");
+const { User } = require("../models/UserModel");
+const jwt = require("jsonwebtoken");
 
 const { app } = require("../server");
 
 const { describe, afterAll, it, expect } = require("@jest/globals");
+const { generateUserJWT } = require("../services/auth_services");
 
 describe("Get all posts route working...", () => {
   it("...Server responds with all posts.", async () => {
@@ -67,6 +70,29 @@ describe("Get all distinct status...", () => {
     const response = await request(app).get("/posts/filter?status=color");
     expect(response.statusCode).toBe(200);
     expect(response.body.data.length).toBe(2);
+  });
+});
+
+describe("Get all posts from specific user route", () => {
+  it("...Server responds with all posts from a specific user", async () => {
+    // Create a new user or fetch an existing user
+    const user = await User.findOne({ username: "ji" }).exec();
+
+    // Generate a JWT token with the user ID
+    const token = await generateUserJWT({
+      userId: user._id,
+      username: user.username,
+      email: user.email
+    });
+
+    // Make the request with the JWT token in the headers
+    const response = await request(app).get("/posts/user").set("Authorization", `Bearer ${token}`);
+
+    expect(response.statusCode).toBe(200);
+    const posts = response.body.data;
+    for (const post of posts) {
+      expect(post.userId).toBe(user._id.toString());
+    }
   });
 });
 
