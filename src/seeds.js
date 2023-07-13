@@ -59,7 +59,7 @@ const users = [
 // Array of post objects to be inserted into the database
 const posts = [
   {
-    name: "Johnny",
+    title: "Johnny",
     species: "dog",
     breed: "German Specie",
     color: "cream",
@@ -71,7 +71,7 @@ const posts = [
     userId: null
   },
   {
-    name: "peter",
+    title: "peter",
     species: "cat",
     breed: "German Specie",
     color: "white",
