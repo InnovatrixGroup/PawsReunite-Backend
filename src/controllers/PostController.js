@@ -81,7 +81,7 @@ const createPost = async (request, response) => {
       data: savedPost
     });
   } catch (error) {
-    response.json({
+    response.status(400).json({
       error: error.message
     });
   }
@@ -102,10 +102,12 @@ const deletePost = async (request, response) => {
         data: deletedPost
       });
     } else {
-      throw new Error("You are not authorized to delete this post.");
+      const error = new Error("You are not authorized to delete this post.");
+      error.statusCode = 403;
+      throw error;
     }
   } catch (error) {
-    response.json({
+    response.status(error.statusCode || 500).json({
       error: error.message
     });
   }

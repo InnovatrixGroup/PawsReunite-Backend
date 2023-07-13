@@ -15,9 +15,12 @@ describe("Database connected...", () => {
   it("Server responds with database information.", async () => {
     const response = await request(app).get("/databaseHealth");
     expect(response.statusCode).toBe(200);
-    expect(response.body.data.databaseName).toBe("PawsReunite_Test");
-    expect(response.body.data.databaseModels).toStrictEqual(["Role", "User", "Post", "Comment"]);
-  });
+    const databaseInfo = response.body.data;
+    expect(databaseInfo.databaseName).toBe("PawsReunite_Test");
+    expect(databaseInfo.databaseModels).toStrictEqual(["Role", "User", "Post", "Comment"]);
+    // increase the timeout to 10 seconds, because it takes time to connect to the database and retrieve the information
+    // cause sometimes it takes more than 5 seconds to connect to the database
+  }, 10000);
 });
 
 describe("Invalid routes...", () => {
