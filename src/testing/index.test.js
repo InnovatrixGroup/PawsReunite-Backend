@@ -1,7 +1,13 @@
 const request = require("supertest");
 const mongoose = require("mongoose");
 const { app } = require("../server");
-const { describe, afterAll, it, expect } = require("@jest/globals");
+const { describe, afterAll, it, expect, beforeAll } = require("@jest/globals");
+const databaseURL = "mongodb://127.0.0.1:27017/PawsReunite_Test";
+
+beforeAll(async () => {
+  await mongoose.disconnect();
+  await mongoose.connect(databaseURL, {});
+});
 
 describe("Home page route exists.", () => {
   it("Server responds can be viewed.", async () => {

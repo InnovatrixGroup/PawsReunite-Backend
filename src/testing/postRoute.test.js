@@ -1,10 +1,11 @@
 // import necessary modules and dependencies for the tests.
 // import testing libraries
 const request = require("supertest");
-const { describe, afterAll, it, expect } = require("@jest/globals");
+const { describe, afterAll, it, expect, beforeAll } = require("@jest/globals");
 
 // import mongoose for database disconnect
 const mongoose = require("mongoose");
+const databaseURL = "mongodb://127.0.0.1:27017/PawsReunite_Test";
 
 // import database models
 const { User } = require("../models/UserModel");
@@ -17,6 +18,11 @@ const { app } = require("../server");
 
 // import authentication services
 const { generateUserJWT } = require("../services/auth_services");
+
+beforeAll(async () => {
+  await mongoose.disconnect();
+  await mongoose.connect(databaseURL, {});
+});
 
 describe("Get all posts route working...", () => {
   it("...Server responds with all posts.", async () => {
