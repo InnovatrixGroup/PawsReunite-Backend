@@ -2,7 +2,7 @@
  To run the test:
  1. 'npm run start-test' to start the test server
  2. set 'NODE_ENV=test, WIPE=true' in .env file
- 3. 'node src/seed.js' to seed the database
+ 3. 'node src/seeds.js' to seed the database
  4. 'npm run test' to run the test
  */
 const request = require("supertest");
@@ -20,17 +20,37 @@ let regularUserId;
 let adminUserJWTtoken;
 let adminUserId;
 
+beforeAll(async () => {
+  await mongoose.disconnect();
+  await mongoose.connect(databaseURL, {});
+
+  // set up an admin user
+  let password = await hashPassword("123456aB!");
+  const adminUser = new User({
+    username: "admin",
+    email: "admin@test.com",
+    password: password
+  });
+  await adminUser.save();
+  adminUserId = adminUser._id;
+  let adminRole = await Role.findOne({ name: "admin" });
+  await User.findByIdAndUpdate(adminUser._id, { roleId: adminRole._id });
+
+  // admin user log in to get JWT
+  const res = await request(app).post("/users/signin").send({
+    email: adminUser.email,
+    password: "123456aB!"
+  });
+  adminUserJWTtoken = res.body.JWTtoken;
+});
+
+afterAll(async () => {
+  await User.findByIdAndDelete(adminUserId);
+  await mongoose.connection.close();
+});
+
 // test signup route
 describe("User signup", () => {
-  beforeAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connect(databaseURL, {});
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
-
   it("User can signup successfully if providing correct info", async () => {
     const res = await request(app).post("/users/signup").send({
       username: "tester1",
@@ -103,15 +123,6 @@ describe("User signup", () => {
 
 // test signin route
 describe("User signin", () => {
-  beforeAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connect(databaseURL, {});
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
-
   it("User can sign in successfully if providing correct info", async () => {
     const res = await request(app).post("/users/signin").send({
       email: "tester1@test.com",
@@ -122,7 +133,7 @@ describe("User signin", () => {
     expect(res.body).toHaveProperty("JWTtoken");
   });
 
-  it("User cannot sign in successfully if providing an incorrect info", async () => {
+  it("User cannot sign in successfully if providing incorrect info", async () => {
     const res = await request(app).post("/users/signup").send({
       email: "tester1@test.com",
       password: "123456aB"
@@ -134,34 +145,6 @@ describe("User signin", () => {
 
 // test user edit profile route
 describe("User edit profile", () => {
-  beforeAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connect(databaseURL, {});
-
-    // set up an admin user
-    let password = await hashPassword("123456aB!");
-    const adminUser = new User({
-      username: "admin",
-      email: "admin@test.com",
-      password: password
-    });
-    await adminUser.save();
-    adminUserId = adminUser._id;
-    let adminRole = await Role.findOne({ name: "admin" });
-    await User.findByIdAndUpdate(adminUser._id, { roleId: adminRole._id });
-
-    // admin user log in to get JWT
-    const res = await request(app).post("/users/signin").send({
-      email: adminUser.email,
-      password: "123456aB!"
-    });
-    adminUserJWTtoken = res.body.JWTtoken;
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
-
   it("User can edit profile successfully if providing correct info", async () => {
     const res = await request(app)
       .put("/users")
@@ -186,15 +169,6 @@ describe("User edit profile", () => {
 
 // test get all user route
 describe("Get all users", () => {
-  beforeAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connect(databaseURL, {});
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
-
   it("Admin user can view all account details", async () => {
     const res = await request(app)
       .get("/users/all")
@@ -215,15 +189,6 @@ describe("Get all users", () => {
 
 // test get user details route
 describe("Get user details", () => {
-  beforeAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connect(databaseURL, {});
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
-
   it("A user can view personal account details given the user has been authenticated", async () => {
     const res = await request(app)
       .get(`/users/${regularUserId}`)
@@ -244,15 +209,6 @@ describe("Get user details", () => {
 
 // test delete user route
 describe("delete user", () => {
-  beforeAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connect(databaseURL, {});
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
-
   it("Non-admin user cannot delete account", async () => {
     const res = await request(app)
       .delete(`/users/${adminUserId}`)
