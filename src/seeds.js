@@ -59,7 +59,7 @@ const users = [
 // Array of post objects to be inserted into the database
 const posts = [
   {
-    name: "Johnny",
+    title: "Johnny",
     species: "dog",
     breed: "German Specie",
     color: "cream",
@@ -71,7 +71,7 @@ const posts = [
     userId: null
   },
   {
-    name: "peter",
+    title: "peter",
     species: "cat",
     breed: "German Specie",
     color: "white",
@@ -156,7 +156,8 @@ dbConnect(databaseURL)
 
     for (const post of posts) {
       // Assigning a random user ID to each post from the created users
-      post.userId = usersCreated[Math.floor(Math.random() * usersCreated.length)].id;
+      // post.userId = usersCreated[Math.floor(Math.random() * usersCreated.length)].id;
+      post.userId = usersCreated[2].id;
     }
     const postsCreated = await Post.insertMany(posts);
 
