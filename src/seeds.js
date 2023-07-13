@@ -147,9 +147,11 @@ dbConnect(databaseURL)
     // Inserting the roles into the Role collection and storing the created roles
     const rolesCreated = await Role.insertMany(roles);
 
+    // assigning roles to users, first two user are regular, last one is admin
+    users[0].roleId = rolesCreated[0].id;
+    users[1].roleId = rolesCreated[0].id;
+    users[2].roleId = rolesCreated[1].id;
     for (const user of users) {
-      // Assigning each user as a regular role from the created roles
-      user.roleId = rolesCreated[1].id;
       user.password = await hashPassword(user.password);
     }
     const usersCreated = await User.insertMany(users);
