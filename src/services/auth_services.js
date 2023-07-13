@@ -4,6 +4,11 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const crypto = require("crypto");
 
+// Import the dotenv module to load environment variables
+const dotenv = require("dotenv");
+// Load environment variables from .env file
+dotenv.config();
+
 // a function to hash the user's password
 const hashPassword = async (password) => {
   // Generate a random string and jumble it up X amount of times, where X is saltRounds.
