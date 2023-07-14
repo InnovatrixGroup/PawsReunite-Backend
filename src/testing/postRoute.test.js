@@ -293,7 +293,6 @@ describe("Delete post route...", () => {
     const posts = await request(app).get("/posts/user").set("Authorization", `Bearer ${token1}`);
     const lastElementindex = posts.body.data.length - 1;
     const postId = posts.body.data[lastElementindex]._id;
-
     // Make the request with the JWT token in the headers, user2 is not authorised to delete this post
     const response = await request(app)
       .delete(`/posts/${postId}`)

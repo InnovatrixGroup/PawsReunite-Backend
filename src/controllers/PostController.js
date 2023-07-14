@@ -92,8 +92,6 @@ const deletePost = async (request, response) => {
   try {
     // Find the post by its ID
     const post = await Post.findById(request.params.postId).exec();
-    console.log(post);
-    console.log(request.headers.role);
     // only user who created the post or admin can delete the post
     // user equals to find if the user is the same as the one who created the post
     // can not use === because you can not compare two objects, they are always different
