@@ -13,7 +13,7 @@ const getAllComments = async (request, response) => {
       data: allComments
     });
   } catch (error) {
-    response.json({
+    response.status(error.statusCode || 500).json({
       error: error.message
     });
   }
@@ -23,13 +23,15 @@ const getSpecificComment = async (request, response) => {
   try {
     const comment = await Comment.findById(request.params.commentId).exec();
     if (!comment) {
-      throw new Error("Comment not found");
+      const error = new Error("Comment not found");
+      error.statusCode = 404;
+      throw error;
     }
     response.json({
       data: comment
     });
   } catch (error) {
-    response.json({
+    response.status(error.statusCode || 500).json({
       error: error.message
     });
   }
@@ -47,7 +49,7 @@ const createComment = async (request, response) => {
       data: savedComment
     });
   } catch (error) {
-    response.json({
+    response.status(error.statusCode || 500).json({
       error: error.message
     });
   }
@@ -57,20 +59,24 @@ const deleteComment = async (request, response) => {
   try {
     const comment = await Comment.findById(request.params.commentId).exec();
     if (!comment) {
-      throw new Error("Comment not found");
+      const error = new Error("Comment not found");
+      error.statusCode = 404;
+      throw error;
     }
-    if (
-      comment.userId.equals(request.headers.userId) === false ||
-      request.headers.role !== "admin"
-    ) {
-      throw new Error("You are not authorized to delete this comment");
+
+    // check if the user is the same as the user in the JWT token, or if the user is an admin
+    if (comment.userId.equals(request.headers.userId) || request.headers.role == "admin") {
+      const removedComment = await Comment.findByIdAndDelete(request.params.commentId).exec();
+      response.json({
+        data: removedComment
+      });
+    } else {
+      const error = new Error("You are not authorized to delete this comment");
+      error.statusCode = 400;
+      throw error;
     }
-    const removedComment = await Comment.findByIdAndDelete(request.params.commentId).exec();
-    response.json({
-      data: removedComment
-    });
   } catch (error) {
-    response.json({
+    response.status(error.statusCode || 500).json({
       error: error.message
     });
   }
