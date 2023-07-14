@@ -63,9 +63,9 @@ const deleteComment = async (request, response) => {
       error.statusCode = 404;
       throw error;
     }
-
+    console.log(request.headers);
     // check if the user is the same as the user in the JWT token, or if the user is an admin
-    if (comment.userId.equals(request.headers.userId) || request.headers.role == "admin") {
+    if (comment.userId.equals(request.headers.userId) || request.headers.userRole == "admin") {
       const removedComment = await Comment.findByIdAndDelete(request.params.commentId).exec();
       response.json({
         data: removedComment
