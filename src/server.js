@@ -11,8 +11,8 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const PORT = process.env.PORT || 3001;
-const HOST = process.env.HOST || "localhost";
+const PORT = process.env.PORT;
+const HOST = process.env.HOST;
 
 // Configure some basic Helmet settings on the server instance.
 const helmet = require("helmet");
