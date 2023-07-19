@@ -5,7 +5,7 @@ const getAllComments = async (request, response) => {
     const postId = request.query.postId;
     let allComments;
     if (postId) {
-      allComments = await Comment.find({ postId: postId }).exec();
+      allComments = await Comment.find({ postId: postId }).populate("userId").exec();
     } else {
       allComments = await Comment.find({}).exec();
     }
@@ -21,7 +21,7 @@ const getAllComments = async (request, response) => {
 
 const getSpecificComment = async (request, response) => {
   try {
-    const comment = await Comment.findById(request.params.commentId).exec();
+    const comment = await Comment.findById(request.params.commentId).populate("userId").exec();
     if (!comment) {
       throw new Error("Comment not found");
     }
