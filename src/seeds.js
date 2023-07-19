@@ -60,24 +60,85 @@ const users = [
 const posts = [
   {
     title: "Johnny",
-    species: "dog",
+    species: "Dog",
     breed: "German Specie",
     color: "cream",
-    description: "johnny is my friend",
-    photos: ["https://pawsreunite.s3.ap-southeast-2.amazonaws.com/cat1.jpg"],
+    description:
+      "Max is a friendly and energetic Labrador Retriever who went missing on July 10, 2023. He is a male dog with a golden coat and a white patch on his chest. Max is around 2 years old and has a medium build. He is wearing a red collar with a tag that has his name and our contact information. If you see Max or have any information about his whereabouts, please contact us immediately. We miss him dearly, and any help in finding him would be greatly appreciated. Max is a beloved member of our family, and we are anxious to have him back home with us.",
+    photos: [
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/dog4.jpg",
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/dog3.jpg",
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/dog2.jpg",
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/dog1.jpg"
+    ],
     suburb: "2000",
     contactInfo: "0433512626",
     status: "lost",
     userId: null
   },
   {
-    title: "peter",
-    species: "cat",
-    breed: "German Specie",
+    title: "Peter",
+    species: "Cat",
+    breed: "American Bobtail",
     color: "white",
-    description: "please help to find peter",
-    photos: ["https://pawsreunite.s3.ap-southeast-2.amazonaws.com/dog1.jpg"],
+    description:
+      "Our beloved Labrador Retriever named Max went missing on July 10th, 2023, in the Elmwood Avenue area of Anytown. Max is a friendly and well-trained dog with a golden coat and a distinctive white patch on his chest. He is medium-sized and approximately 2 years old. Max was last seen wearing a blue collar with an identification tag.",
+    photos: [
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/cat1.jpg",
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/cat2.jpg"
+    ],
     suburb: "2012",
+    contactInfo: "0433512626",
+    status: "found",
+    userId: null
+  },
+  {
+    title: "Mimi",
+    species: "Cat",
+    breed: "Minskin",
+    color: "white",
+    description:
+      "Our beloved Labrador Retriever named Max went missing on July 10th, 2023, in the Elmwood Avenue area of Anytown. Max is a friendly and well-trained dog with a golden coat and a distinctive white patch on his chest. He is medium-sized and approximately 2 years old. Max was last seen wearing a blue collar with an identification tag.",
+    photos: [
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/cat3.jpg",
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/cat4.jpg",
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/cat5.jpg"
+    ],
+    suburb: "2000",
+    contactInfo: "0433512626",
+    status: "found",
+    userId: null
+  },
+  {
+    title: "Mimi",
+    species: "Cat",
+    breed: "Peterbald",
+    color: "white",
+    description:
+      "Our beloved Labrador Retriever named Max went missing on July 10th, 2023, in the Elmwood Avenue area of Anytown. Max is a friendly and well-trained dog with a golden coat and a distinctive white patch on his chest. He is medium-sized and approximately 2 years old. Max was last seen wearing a blue collar with an identification tag.",
+    photos: [
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/cat6.jpg",
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/cat7.jpg",
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/cat8.jpg"
+    ],
+    suburb: "2088",
+    contactInfo: "0433512626",
+    status: "lost",
+    userId: null
+  },
+  {
+    title: "Felix",
+    species: "Dog",
+    breed: "Peterbald",
+    color: "white",
+    description:
+      "Our beloved Labrador Retriever named Max went missing on July 10th, 2023, in the Elmwood Avenue area of Anytown. Max is a friendly and well-trained dog with a golden coat and a distinctive white patch on his chest. He is medium-sized and approximately 2 years old. Max was last seen wearing a blue collar with an identification tag.",
+    photos: [
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/dog5.jpg",
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/dog6.jpg",
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/dog7.jpg"
+    ],
+    suburb: "2088",
     contactInfo: "0433512626",
     status: "found",
     userId: null
