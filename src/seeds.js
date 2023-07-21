@@ -129,7 +129,7 @@ const posts = [
   {
     title: "Felix",
     species: "Dog",
-    breed: "Peterbald",
+    breed: "Small dog",
     color: "white",
     description:
       "Our beloved Labrador Retriever named Max went missing on July 10th, 2023, in the Elmwood Avenue area of Anytown. Max is a friendly and well-trained dog with a golden coat and a distinctive white patch on his chest. He is medium-sized and approximately 2 years old. Max was last seen wearing a blue collar with an identification tag.",

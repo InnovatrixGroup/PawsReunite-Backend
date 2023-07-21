@@ -149,12 +149,87 @@ const updatePost = async (request, response) => {
 };
 
 // get all status of posts
+// const filterPosts = async (request, response) => {
+//   try {
+//     const {species, breed, color, suburb, status} = request.query;
+
+//     // get all distinct status of posts
+//     const allStatus = await Post.distinct(request.query.status).exec();
+//     response.json({
+//       data: allStatus
+//     });
+//   } catch (error) {
+//     response.json({
+//       error: error.message
+//     });
+//   }
+// };
+
 const filterPosts = async (request, response) => {
   try {
-    // get all distinct status of posts
-    const allStatus = await Post.distinct(request.query.status).exec();
+    const { species, breed, color, suburb, status } = request.query;
+
+    // Create an empty filter object to store the conditions
+    const filter = {};
+
+    // Add conditions to the filter object if the corresponding query parameters exist
+    if (species) {
+      filter.species = species;
+    }
+
+    if (breed) {
+      filter.breed = breed;
+    }
+
+    if (color) {
+      filter.color = color;
+    }
+
+    if (suburb) {
+      filter.suburb = suburb;
+    }
+
+    // Fetch posts based on the filter conditions
+    let filteredPosts = [];
+    if (Object.keys(filter).length > 0) {
+      filteredPosts = await Post.find(filter).exec();
+    }
+
+    // Get distinct values of the 'status' field from the filtered posts
+    const allStatus = await Post.distinct(status, filter).exec();
+
     response.json({
-      data: allStatus
+      data: allStatus,
+      filteredPosts: filteredPosts
+    });
+  } catch (error) {
+    response.json({
+      error: error.message
+    });
+  }
+};
+
+const getDistinctBreeds = async (request, response) => {
+  try {
+    const pipline = [
+      {
+        $group: {
+          _id: "$species",
+          breeds: { $addToSet: "$breed" }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          species: "$_id",
+          breeds: 1
+        }
+      }
+    ];
+
+    const distinctBreeds = await Post.aggregate(pipline).exec();
+    response.json({
+      data: distinctBreeds
     });
   } catch (error) {
     response.json({
@@ -169,5 +244,6 @@ module.exports = {
   createPost,
   deletePost,
   updatePost,
-  filterPosts
+  filterPosts,
+  getDistinctBreeds
 };
