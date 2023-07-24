@@ -131,7 +131,7 @@ const updatePost = async (request, response) => {
         description: request.body.description || post.description,
         suburb: request.body.suburb || post.suburb,
         contactInfo: request.body.contactInfo || post.contactInfo,
-        status: post.status
+        status: request.body.status || post.status
       };
 
       const updatedPost = await Post.findByIdAndUpdate(request.params.postId, updatedData, {
