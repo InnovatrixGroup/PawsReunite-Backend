@@ -59,10 +59,10 @@ const users = [
 // Array of post objects to be inserted into the database
 const posts = [
   {
-    title: "Johnny",
+    title: "Johnn",
     species: "Dog",
     breed: "German Specie",
-    color: "cream",
+    color: "Cream",
     description:
       "Max is a friendly and energetic Labrador Retriever who went missing on July 10, 2023. He is a male dog with a golden coat and a white patch on his chest. Max is around 2 years old and has a medium build. He is wearing a red collar with a tag that has his name and our contact information. If you see Max or have any information about his whereabouts, please contact us immediately. We miss him dearly, and any help in finding him would be greatly appreciated. Max is a beloved member of our family, and we are anxious to have him back home with us.",
     photos: [
@@ -80,7 +80,7 @@ const posts = [
     title: "Peter",
     species: "Cat",
     breed: "American Bobtail",
-    color: "white",
+    color: "White",
     description:
       "Our beloved Labrador Retriever named Max went missing on July 10th, 2023, in the Elmwood Avenue area of Anytown. Max is a friendly and well-trained dog with a golden coat and a distinctive white patch on his chest. He is medium-sized and approximately 2 years old. Max was last seen wearing a blue collar with an identification tag.",
     photos: [
@@ -96,7 +96,7 @@ const posts = [
     title: "Mimi",
     species: "Cat",
     breed: "Minskin",
-    color: "white",
+    color: "White",
     description:
       "Our beloved Labrador Retriever named Max went missing on July 10th, 2023, in the Elmwood Avenue area of Anytown. Max is a friendly and well-trained dog with a golden coat and a distinctive white patch on his chest. He is medium-sized and approximately 2 years old. Max was last seen wearing a blue collar with an identification tag.",
     photos: [
@@ -113,7 +113,7 @@ const posts = [
     title: "Mimi",
     species: "Cat",
     breed: "Peterbald",
-    color: "white",
+    color: "White",
     description:
       "Our beloved Labrador Retriever named Max went missing on July 10th, 2023, in the Elmwood Avenue area of Anytown. Max is a friendly and well-trained dog with a golden coat and a distinctive white patch on his chest. He is medium-sized and approximately 2 years old. Max was last seen wearing a blue collar with an identification tag.",
     photos: [
@@ -129,8 +129,8 @@ const posts = [
   {
     title: "Felix",
     species: "Dog",
-    breed: "Small dog",
-    color: "white",
+    breed: "Golden Retriever",
+    color: "Black",
     description:
       "Our beloved Labrador Retriever named Max went missing on July 10th, 2023, in the Elmwood Avenue area of Anytown. Max is a friendly and well-trained dog with a golden coat and a distinctive white patch on his chest. He is medium-sized and approximately 2 years old. Max was last seen wearing a blue collar with an identification tag.",
     photos: [
@@ -141,6 +141,52 @@ const posts = [
     suburb: "2088",
     contactInfo: "0433512626",
     status: "found",
+    userId: null
+  },
+  {
+    title: "Jeff",
+    species: "Dog",
+    breed: "Golden Retriever",
+    color: "Black",
+    description:
+      "Our beloved Labrador Retriever named Max went missing on July 10th, 2023, in the Elmwood Avenue area of Anytown. Max is a friendly and well-trained dog with a golden coat and a distinctive white patch on his chest. He is medium-sized and approximately 2 years old. Max was last seen wearing a blue collar with an identification tag.",
+    photos: ["https://pawsreunite.s3.ap-southeast-2.amazonaws.com/dog8.jpg"],
+    suburb: "2088",
+    contactInfo: "0433512626",
+    status: "found",
+    userId: null
+  },
+  {
+    title: "Betty",
+    species: "Cat",
+    breed: "Ragdoll",
+    color: "Yellow",
+    description:
+      "Our beloved Labrador Retriever named Max went missing on July 10th, 2023, in the Elmwood Avenue area of Anytown. Max is a friendly and well-trained dog with a golden coat and a distinctive white patch on his chest. He is medium-sized and approximately 2 years old. Max was last seen wearing a blue collar with an identification tag.",
+    photos: [
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/cat9.jpg",
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/cat3.jpg",
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/cat2.jpg"
+    ],
+    suburb: "2030",
+    contactInfo: "0433512626",
+    status: "lost",
+    userId: null
+  },
+  {
+    title: "Lina",
+    species: "Cat",
+    breed: "Sphynx cat",
+    color: "White",
+    description:
+      "Our beloved Labrador Retriever named Max went missing on July 10th, 2023, in the Elmwood Avenue area of Anytown. Max is a friendly and well-trained dog with a golden coat and a distinctive white patch on his chest. He is medium-sized and approximately 2 years old. Max was last seen wearing a blue collar with an identification tag.",
+    photos: [
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/cat6.jpg",
+      "https://pawsreunite.s3.ap-southeast-2.amazonaws.com/cat4.jpg"
+    ],
+    suburb: "2030",
+    contactInfo: "0433512626",
+    status: "lost",
     userId: null
   }
 ];
@@ -159,6 +205,34 @@ const comments = [
   },
   {
     content: "this dog",
+    userId: null,
+    createdAt: Date.now()
+  },
+  {
+    content: "I know your house will seem empty without your sweet pet.",
+    userId: null,
+    createdAt: Date.now()
+  },
+  {
+    content: "I'm here for you if you need anything.",
+    userId: null,
+    createdAt: Date.now()
+  },
+  {
+    content:
+      "Know that cute loved you from the tip of their wet nose to the end of their furry tail.",
+    userId: null,
+    createdAt: Date.now()
+  },
+  {
+    content:
+      "No one could have loved their animal more than you did. How lucky they were to find you.",
+    userId: null,
+    createdAt: Date.now()
+  },
+  {
+    content:
+      "Try not to cry because they are gone. Smile because you had the chance to know such a sweet kitty.",
     userId: null,
     createdAt: Date.now()
   }
