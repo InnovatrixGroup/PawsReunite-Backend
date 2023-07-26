@@ -123,6 +123,15 @@ const updatePost = async (request, response) => {
       throw new Error("You are not authorized to update this post.");
     } else {
       // If the user is authorized to update the post, update the post with the provided data or keep the old data
+      // Get files from the request
+
+      const files = request.files;
+      console.log(files);
+      // Upload files to AWS S3 bucket and get the URLs
+      const photos = await uploadFilesToS3(files);
+      // get old photos from the request covert string to array
+      const oldphotoList = request.body.oldphotos.split(",");
+
       const updatedData = {
         title: request.body.title || post.title,
         species: request.body.species || post.species,
@@ -131,7 +140,8 @@ const updatePost = async (request, response) => {
         description: request.body.description || post.description,
         suburb: request.body.suburb || post.suburb,
         contactInfo: request.body.contactInfo || post.contactInfo,
-        status: request.body.status || post.status
+        status: request.body.status || post.status,
+        photos: [...oldphotoList, ...photos]
       };
 
       const updatedPost = await Post.findByIdAndUpdate(request.params.postId, updatedData, {

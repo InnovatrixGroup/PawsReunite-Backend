@@ -293,8 +293,8 @@ dbConnect(databaseURL)
 
     for (const post of posts) {
       // Assigning a random user ID to each post from the created users
-      // post.userId = usersCreated[Math.floor(Math.random() * usersCreated.length)].id;
-      post.userId = usersCreated[2].id;
+      post.userId = usersCreated[Math.floor(Math.random() * usersCreated.length)].id;
+      // post.userId = usersCreated[2].id;
     }
     const postsCreated = await Post.insertMany(posts);
 
