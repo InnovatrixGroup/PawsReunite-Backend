@@ -32,7 +32,14 @@ router.post(
 
 router.delete("/:postId", verifyJwtAndRefresh, errorCheck, deletePost);
 
-router.put("/:postId", verifyJwtAndRefresh, validateTitleLength, errorCheck, updatePost);
+router.put(
+  "/:postId",
+  upload.array("photos"),
+  verifyJwtAndRefresh,
+  validateTitleLength,
+  errorCheck,
+  updatePost
+);
 
 router.get("/distinct-breeds", getDistinctBreeds);
 
