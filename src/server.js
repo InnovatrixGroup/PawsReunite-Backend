@@ -114,6 +114,9 @@ app.use("/posts", PostRoute);
 const CommentRoute = require("./routes/CommentRoute");
 app.use("/comments", CommentRoute);
 
+const SuburbsSearchRoute = require("./routes/SuburbsRoute");
+app.use("/suburbs", SuburbsSearchRoute);
+
 app.get("*", (request, response) => {
   response.status(404).json({
     error: "Invalid Route"
