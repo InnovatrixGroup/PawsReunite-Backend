@@ -126,11 +126,15 @@ const updatePost = async (request, response) => {
       // Get files from the request
 
       const files = request.files;
-      console.log(files);
       // Upload files to AWS S3 bucket and get the URLs
       const photos = await uploadFilesToS3(files);
       // get old photos from the request covert string to array
-      const oldphotoList = request.body.oldphotos.split(",");
+      let oldphotoList = [];
+      if (request.body.oldphotos.length == 0) {
+        oldphotoList = [];
+      } else {
+        oldphotoList = request.body.oldphotos.split(",");
+      }
 
       const updatedData = {
         title: request.body.title || post.title,
