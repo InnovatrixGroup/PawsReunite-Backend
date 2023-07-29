@@ -45,8 +45,9 @@ const createComment = async (request, response) => {
       content: request.body.content
     });
     const savedComment = await newComment.save();
+    const newSavedComment = await Comment.findById(savedComment._id).populate("userId").exec();
     response.json({
-      data: savedComment
+      data: newSavedComment
     });
   } catch (error) {
     response.status(error.statusCode || 500).json({
