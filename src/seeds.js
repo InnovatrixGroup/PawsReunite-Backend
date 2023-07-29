@@ -9,6 +9,7 @@ const { User } = require("./models/UserModel");
 const { Post } = require("./models/PostModel");
 const { Role } = require("./models/RoleModel");
 const { Comment } = require("./models/CommentModel");
+const { Notification } = require("./models/NotificationModel");
 
 // Importing the dotenv library for environment variable management
 const dotenv = require("dotenv");
@@ -299,6 +300,19 @@ const comments = [
   }
 ];
 
+const notifications = [
+  {
+    message: "Your pet has been found!",
+    userId: null,
+    createdAt: Date.now()
+  },
+  {
+    message: "Your pet has been found!",
+    userId: null,
+    createdAt: Date.now()
+  }
+];
+
 let databaseURL = "";
 // Switch statement to determine the database URL based on the NODE_ENV environment variable
 switch (process.env.NODE_ENV.toLowerCase()) {
@@ -366,6 +380,13 @@ dbConnect(databaseURL)
     }
     const commentsCreated = await Comment.insertMany(comments);
 
+    for (const notification of notifications) {
+      // Assigning a random user ID and post ID to each comment from the created users and posts
+      notification.userId = usersCreated[2].id;
+    }
+
+    const notificationsCreated = await Notification.insertMany(notifications);
+
     console.log(
       "New DB data created.\n" +
         JSON.stringify(
@@ -373,7 +394,8 @@ dbConnect(databaseURL)
             roles: rolesCreated,
             users: usersCreated,
             posts: postsCreated,
-            comments: commentsCreated
+            comments: commentsCreated,
+            notifications: notificationsCreated
           },
           null,
           4
