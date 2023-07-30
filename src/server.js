@@ -34,7 +34,7 @@ app.use(
 // array of origins for CORS configuration.
 const cors = require("cors");
 var corsOptions = {
-  origin: ["http://localhost:3000", "https://deployedApp.com"],
+  origin: ["http://localhost:3000", "https://paws-reunite.netlify.app"],
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
