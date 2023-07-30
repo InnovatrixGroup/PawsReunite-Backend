@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const NotificationSchema = new mongoose.Schema({
   userId: { type: mongoose.Types.ObjectId, ref: "User" },
   message: { type: String, required: true },
+  postId: { type: mongoose.Types.ObjectId, ref: "Post" },
   createdAt: { type: Date, default: Date.now }
 });
 
