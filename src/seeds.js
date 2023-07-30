@@ -383,6 +383,7 @@ dbConnect(databaseURL)
     for (const notification of notifications) {
       // Assigning a random user ID and post ID to each comment from the created users and posts
       notification.userId = usersCreated[2].id;
+      notification.postId = postsCreated[Math.floor(Math.random() * postsCreated.length)].id;
     }
 
     const notificationsCreated = await Notification.insertMany(notifications);
