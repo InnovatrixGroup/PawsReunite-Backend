@@ -146,7 +146,9 @@ const getAccountDetails = async (req, res) => {
     if (!userToCheck) {
       return res.status(404).json({ error: "User not found" });
     } else if (userToCheck._id.equals(req.headers.user._id)) {
-      return res.json(userToCheck);
+      let user = userToCheck.toObject();
+      user.role = req.headers.userRole;
+      return res.json(user);
     } else {
       return res.status(401).json({ error: "Unauthorized" });
     }

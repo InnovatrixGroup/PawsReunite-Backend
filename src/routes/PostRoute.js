@@ -6,7 +6,8 @@ const {
   updatePost,
   createPost,
   deletePost,
-  filterPosts
+  filterPosts,
+  getDistinctBreeds
 } = require("../controllers/PostController");
 
 const { upload } = require("../middleware/image_upload_aws");
@@ -31,6 +32,15 @@ router.post(
 
 router.delete("/:postId", verifyJwtAndRefresh, errorCheck, deletePost);
 
-router.put("/:postId", verifyJwtAndRefresh, validateTitleLength, errorCheck, updatePost);
+router.put(
+  "/:postId",
+  upload.array("photos"),
+  verifyJwtAndRefresh,
+  validateTitleLength,
+  errorCheck,
+  updatePost
+);
+
+router.get("/distinct-breeds", getDistinctBreeds);
 
 module.exports = router;
