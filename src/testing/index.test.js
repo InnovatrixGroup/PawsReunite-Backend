@@ -23,7 +23,13 @@ describe("Database connected...", () => {
     expect(response.statusCode).toBe(200);
     const databaseInfo = response.body.data;
     expect(databaseInfo.databaseName).toBe("PawsReunite_Test");
-    expect(databaseInfo.databaseModels).toStrictEqual(["Role", "User", "Post", "Comment"]);
+    expect(databaseInfo.databaseModels).toStrictEqual([
+      "Role",
+      "User",
+      "Post",
+      "Comment",
+      "Notification"
+    ]);
     // increase the timeout to 10 seconds, because it takes time to connect to the database and retrieve the information
     // cause sometimes it takes more than 5 seconds to connect to the database
   }, 10000);
