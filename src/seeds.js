@@ -358,9 +358,9 @@ dbConnect(databaseURL)
     const rolesCreated = await Role.insertMany(roles);
 
     // assigning roles to users, first two user are regular, last one is admin
-    users[0].roleId = rolesCreated[0].id;
-    users[1].roleId = rolesCreated[0].id;
-    users[2].roleId = rolesCreated[1].id;
+    users[0].roleId = rolesCreated[0]._id;
+    users[1].roleId = rolesCreated[0]._id;
+    users[2].roleId = rolesCreated[1]._id;
     for (const user of users) {
       user.password = await hashPassword(user.password);
     }
@@ -368,21 +368,22 @@ dbConnect(databaseURL)
 
     for (const post of posts) {
       // Assigning a random user ID to each post from the created users
-      post.userId = usersCreated[Math.floor(Math.random() * usersCreated.length)].id;
+      post.userId = usersCreated[Math.floor(Math.random() * usersCreated.length)]._id;
       // post.userId = usersCreated[2].id;
     }
     const postsCreated = await Post.insertMany(posts);
 
     for (const comment of comments) {
       // Assigning a random user ID and post ID to each comment from the created users and posts
-      comment.userId = usersCreated[Math.floor(Math.random() * usersCreated.length)].id;
-      comment.postId = postsCreated[Math.floor(Math.random() * postsCreated.length)].id;
+      comment.userId = usersCreated[Math.floor(Math.random() * usersCreated.length)]._id;
+      comment.postId = postsCreated[Math.floor(Math.random() * postsCreated.length)]._id;
     }
     const commentsCreated = await Comment.insertMany(comments);
 
     for (const notification of notifications) {
       // Assigning a random user ID and post ID to each comment from the created users and posts
-      notification.userId = usersCreated[2].id;
+      notification.userId = usersCreated[2]._id;
+      notification.postId = postsCreated[Math.floor(Math.random() * postsCreated.length)]._id;
     }
 
     const notificationsCreated = await Notification.insertMany(notifications);

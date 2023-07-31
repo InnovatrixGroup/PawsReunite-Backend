@@ -17,7 +17,8 @@ const createNotification = async (request, response) => {
   try {
     const newNotification = new Notification({
       userId: request.body.userId,
-      message: request.body.message
+      message: request.body.message,
+      postId: request.body.postId
     });
     const savedNotification = await newNotification.save();
     response.json({

@@ -180,12 +180,14 @@ describe("Create post route", () => {
       .attach("photos", fileBuffer2, { filename: "dog2.jpg" })
       .field("title", "Example")
       .field("status", "lost")
-      .field("color", "cream")
+      .field("color", "Cream")
       .field("breed", "Poodle")
       .field("species", "Dog")
       .field("suburb", "2088")
       .field("contactInfo", "0412345678")
       .field("description", "This is an example post");
+
+    console.log(response.body);
 
     expect(response.statusCode).toBe(200);
 
@@ -202,7 +204,7 @@ describe("Create post route", () => {
       expect(photoUrl).toMatch(/^https:\/\/pawsreunite.s3.amazonaws.com\/.*/);
     }
     expect(createdPost.status).toBe("lost");
-    expect(createdPost.color).toBe("cream");
+    expect(createdPost.color).toBe("Cream");
     expect(createdPost.breed).toBe("Poodle");
     expect(createdPost.suburb).toBe("2088");
     expect(createdPost.contactInfo).toBe("0412345678");
@@ -224,7 +226,7 @@ describe("Create post route", () => {
       .post("/posts")
       .set("Authorization", `Bearer ${token}`)
       .attach("photos", fileBuffer1, { filename: "dog1.jpg" })
-      .field("title", "This is a title that is more than 10 characters")
+      .field("title", "This is a title that is more than 15 characters")
       .field("color", "cream")
       .field("breed", "Poodle")
       .field("species", "Dog")
@@ -234,7 +236,7 @@ describe("Create post route", () => {
 
     expect(response.statusCode).toBe(400);
     // Check if the server responds with the correct error message
-    expect(response.body.errors).toContain("Title must be less than 10 characters long");
+    expect(response.body.errors).toContain("Title must be less than 15 characters long");
   });
 
   it("...Server responds with error message for invalid post data (missing required fields)", async () => {
