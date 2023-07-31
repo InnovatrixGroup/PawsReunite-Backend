@@ -4,9 +4,13 @@ const mongoose = require("mongoose");
 // Defining a schema for the Post model
 const PostSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  species: { type: String, required: true },
+  species: { type: String, enum: ["Dog", "Cat", "Bird", "Rabbit", "Other"], required: true },
   breed: { type: String, required: true },
-  color: { type: String, required: true },
+  color: {
+    type: String,
+    enum: ["Yellow", "Black", "White", "Brown", "Grey", "Multi", "Cream", "Other"],
+    required: true
+  },
   description: { type: String },
   photos: [{ type: String }],
   suburb: { type: String, required: true },
