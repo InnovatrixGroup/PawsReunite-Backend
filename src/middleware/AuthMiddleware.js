@@ -29,6 +29,7 @@ const verifyJwtAndRefresh = async (req, res, next) => {
   }
 };
 
+// Make sure the user is an admin
 const onlyAllowAdmins = async (req, res, next) => {
   if (req.headers.userRole === "admin") {
     next();

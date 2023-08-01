@@ -1,5 +1,6 @@
 const { Comment } = require("../models/CommentModel");
 
+// Async function to retrieve all comments
 const getAllComments = async (request, response) => {
   try {
     const postId = request.query.postId;
@@ -19,6 +20,7 @@ const getAllComments = async (request, response) => {
   }
 };
 
+// Async function to retrieve a specific comment by ID
 const getSpecificComment = async (request, response) => {
   try {
     const comment = await Comment.findById(request.params.commentId).populate("userId").exec();
@@ -37,6 +39,7 @@ const getSpecificComment = async (request, response) => {
   }
 };
 
+// Async function to create a new comment
 const createComment = async (request, response) => {
   try {
     const newComment = new Comment({

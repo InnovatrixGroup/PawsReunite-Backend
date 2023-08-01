@@ -169,23 +169,7 @@ const updatePost = async (request, response) => {
   }
 };
 
-// get all status of posts
-// const filterPosts = async (request, response) => {
-//   try {
-//     const {species, breed, color, suburb, status} = request.query;
-
-//     // get all distinct status of posts
-//     const allStatus = await Post.distinct(request.query.status).exec();
-//     response.json({
-//       data: allStatus
-//     });
-//   } catch (error) {
-//     response.json({
-//       error: error.message
-//     });
-//   }
-// };
-
+// Get all distinct values of a field
 const filterPosts = async (request, response) => {
   try {
     const { status } = request.query;
@@ -203,15 +187,18 @@ const filterPosts = async (request, response) => {
   }
 };
 
+// Get all distinct breeds of each species
 const getDistinctBreeds = async (request, response) => {
   try {
     const pipline = [
       {
+        // Group by species and add all breeds of each species to an array
         $group: {
           _id: "$species",
           breeds: { $addToSet: "$breed" }
         }
       },
+      // Project the data to remove the '_id' field and rename the '_id' field to 'species'
       {
         $project: {
           _id: 0,
