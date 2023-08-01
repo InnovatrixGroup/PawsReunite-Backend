@@ -107,9 +107,6 @@ app.get("/databaseHealth", (request, response) => {
 });
 
 //Routes Here
-const RoleRoute = require("./routes/RoleRoute");
-app.use("/roles", RoleRoute);
-
 const usersRoute = require("./routes/UserRoute");
 app.use("/users", usersRoute);
 
