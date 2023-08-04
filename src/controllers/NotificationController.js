@@ -1,5 +1,6 @@
 const { Notification } = require("../models/NotificationModel");
 
+// Async function to retrieve all notifications
 const getAllNotifications = async (request, response) => {
   try {
     const allNotifications = await Notification.find({ userId: request.headers.userId }).exec();
@@ -13,6 +14,7 @@ const getAllNotifications = async (request, response) => {
   }
 };
 
+// Async function to create a new notification
 const createNotification = async (request, response) => {
   try {
     const newNotification = new Notification({

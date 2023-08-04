@@ -44,6 +44,8 @@ app.use(express.urlencoded({ extended: true }));
 
 const mongoose = require("mongoose");
 let databaseURL = "";
+
+// Configure the database connection based on the current environment.
 switch (process.env.NODE_ENV.toLowerCase()) {
   case "prod":
   case "production":
@@ -62,6 +64,7 @@ switch (process.env.NODE_ENV.toLowerCase()) {
 }
 
 const { dbConnect, dbClose } = require("./database");
+// connect to the database
 dbConnect(databaseURL)
   .then(() => {
     console.log("Database connected!");
@@ -79,12 +82,14 @@ app.use((request, response, next) => {
   next();
 });
 
+// basic route for the home page
 app.get("/", (request, response) => {
   response.json({
     data: "Welcome to PawsReunite"
   });
 });
 
+// route for checking database health
 app.get("/databaseHealth", (request, response) => {
   const databaseState = mongoose.connection.readyState;
   const databaseName = mongoose.connection.name;
@@ -102,9 +107,6 @@ app.get("/databaseHealth", (request, response) => {
 });
 
 //Routes Here
-const RoleRoute = require("./routes/RoleRoute");
-app.use("/roles", RoleRoute);
-
 const usersRoute = require("./routes/UserRoute");
 app.use("/users", usersRoute);
 
