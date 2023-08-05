@@ -1,4 +1,5 @@
 const { Post } = require("../models/PostModel");
+const { Notification } = require("../models/NotificationModel");
 
 // Async function to retrieve all posts based on query parameters or no params
 const getAllPosts = async (request, response) => {
@@ -102,8 +103,11 @@ const deletePost = async (request, response) => {
     // can not use === because you can not compare two objects, they are always different
     if (post.userId.equals(request.headers.userId) || request.headers.userRole == "admin") {
       const deletedPost = await Post.findByIdAndDelete(request.params.postId).exec();
+      const deletedNotification = await Notification.deleteMany({
+        postId: request.params.postId
+      }).exec();
       response.json({
-        data: deletedPost
+        data: { deletedPost, deletedNotification }
       });
     } else {
       const error = new Error("You are not authorized to delete this post.");
